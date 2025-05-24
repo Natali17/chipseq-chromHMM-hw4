@@ -50,32 +50,62 @@ grep -i A549 files.txt | grep -i "\.bam" > A549_bam_list.txt
 Более подробно о содержании файла cellmarkfiletable.txt можно посмотреть в руководстве пользователя [ChromHMM](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/ChromHMM_tutorial.pdf)
 
 ### Активируем миниконду и скачиваем ChromHMM, скачиваем размеры хромосом для разбиения генома на интервалы:
+*Примечание: в коде "#" помечены те команды, которые были использованы для первоначального решения, но в конечном итоге не привели к удовлетворяющей визуализации, поэтому программа chromhmm скачивалась напрямую, а не через биоконду.
+
 ```bash
 source /gpfs/vigg_mipt/kropivnitskaya/miniconda3/bin/activate
-conda install bioconda::chromhmm
-export PATH=/gpfs/vigg_mipt/kropivnitskaya/miniconda3/bin:$PATH
+wget http://compbio.mit.edu/ChromHMM/ChromHMM.zip
+unzip ChromHMM.zip
+cd ChromHMM
+java -jar ChromHMM.jar
 
-wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes -O hg19.txt
-mkdir -p CHROMSIZES
-mv hg19.txt CHROMSIZES/
+#conda install bioconda::chromhmm
+#export PATH=/gpfs/vigg_mipt/kropivnitskaya/miniconda3/bin:$PATH
+#wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes -O hg19.txt
+#mkdir -p CHROMSIZES
+#mv hg19.txt CHROMSIZES/
 ```
 
 ## Запуск программ
 1. Запускаем ChromHMM с опцией BinarizeBam, чтобы конвертировать профили из ChIP-seq экспериментов (bam-файлы) в табличку из 0 и 1, т.е. чтобы сделать разбивку генома на условные интервалы (бины) длиной 200 п.о. и для каждого интервала и метки определить: был ли там пик или нет (1 или 0). Для 11 меток программа работает около 20 мин:
 
 ```bash
-ChromHMM.sh -Xmx8000M BinarizeBam -b 200 CHROMSIZES/hg19.txt chip_seq cellmarkfiletable.txt binarizedData
+java -mx5000M -jar ChromHMM/ChromHMM.jar BinarizeBam -b 200  ChromHMM/CHROMSIZES/hg19.txt chip_seq cellmarkfiletable.txt binarizedData
 
+#ChromHMM.sh -Xmx8000M BinarizeBam -b 200 CHROMSIZES/hg19.txt chip_seq cellmarkfiletable.txt binarizedData
 #Программа LearnModel не работает, если не убрать название клеточной линии из названий бинарных файлов, поэтому:
-for f in A549_chr*_binary.txt; do
-    mv "$f" "${f#A549_}"
-done
+#for f in A549_chr*_binary.txt; do
+#    mv "$f" "${f#A549_}"
+#done
 ```
 
 2. Запускаем ChromHMM с опцией LearnModel, которая автоматически определит параметры N разных эпигенетических типов с наиболее выраженными наборами гистоновых меток и присвоит каждому геномному интервалу определенный эпигенетический тип. Количество разных эпигенетических типов (или состояний) - 10 штук. Для 11 меток программа работает около 1 часа:
 
 ```bash
-ChromHMM.sh -Xmx8000M LearnModel -p 8 binarizedData MYOUTPUT 10 hg19
+java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTPUT 15 hg19
+
+#ChromHMM.sh -Xmx8000M LearnModel -p 8 binarizedData MYOUTPUT 10 hg19
 ```
 
 ## Обработка данных
+#### web_10.html
+[web_10.html]()
+
+<p align="center">
+  <img src="image1.png" width="45%" />
+  <img src="image2.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="image1.png" width="45%" />
+  <img src="image2.png" width="45%" />
+</p>
+
+#### Emission
+
+#### Overlap
+
+#### Transition
+
+#### RefSeqTSS
+
