@@ -88,6 +88,8 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 ```
 
 ## Обработка данных
+
+### Результаты работы LearnModel
 [webpage_15.html](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/webpage_15.html)
 
 #### Transition & Emission
@@ -105,7 +107,12 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 #### Overlap
 ![overlap](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_overlap.png)
 
+### Геномный браузер
+#### Настройки геномного браузера
 http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем файл [A549_15_dense.bed]() --> Return to current position --> Regulation  --> ENCODE Regulation (show, full) & ENC Histone (show) (click) --> Broad Histone (show, full) (click) --> [выбор нужных параметров]() --> Submit --> выбор нужного региона --> получаем изображения:
+![adjusting_browser](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/adjusting_browser.png)
 
-![]()
+#### Визуализация результатов
+![browser_visualization](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/browser_visualization.png)
 
+Активные промоторы - Ctcf, H3k4me3, H3k9ac
