@@ -43,9 +43,9 @@ grep -i A549 files.txt | grep -i "\.bam" > A549_bam_list.txt
 |	CTCF |	CtcfStdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549CtcfEtoh02AlnRep1.bam |
 
 #### Скрипт для скачивания всех файлов
-![Скрипт](/img/downloading_bam.png) 
+![Скрипт](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/downloading_bam.png) 
 
-Вручную создаем текстовый файл [cellmarkfiletable.txt](), в котором указываем название типа клеток, разных гистоновых меток, а также соответствующие .bam файлы для эксперимента и контроля. Один и тот же контрольный файл .bam может быть использован для всех экспериментов.
+Вручную создаем текстовый файл [cellmarkfiletable.txt](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/cellmarkfiletable.txt), в котором указываем название типа клеток, разных гистоновых меток, а также соответствующие .bam файлы для эксперимента и контроля. Один и тот же контрольный файл .bam может быть использован для всех экспериментов.
 
 Более подробно о содержании файла cellmarkfiletable.txt можно посмотреть в руководстве пользователя [ChromHMM](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/ChromHMM_tutorial.pdf)
 
@@ -88,24 +88,24 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 ```
 
 ## Обработка данных
-#### web_10.html
-[web_10.html]()
+[webpage_15.html](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/webpage_15.html)
 
+#### Transition & Emission
 <p align="center">
-  <img src="image1.png" width="45%" />
-  <img src="image2.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png" width="45%" />
 </p>
 
+#### RefSeqTES & RefSeqTSS
 <p align="center">
-  <img src="image1.png" width="45%" />
-  <img src="image2.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_RefSeqTES_neighborhood.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_RefSeqTSS_neighborhood.png" width="45%" />
 </p>
-
-#### Emission
 
 #### Overlap
+![overlap](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_overlap.png)
 
-#### Transition
+http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем файл [A549_15_dense.bed]() --> Return to current position --> Regulation  --> ENCODE Regulation (show, full) & ENC Histone (show) (click) --> Broad Histone (show, full) (click) --> [выбор нужных параметров]() --> Submit --> выбор нужного региона --> получаем изображения:
 
-#### RefSeqTSS
+![]()
 
