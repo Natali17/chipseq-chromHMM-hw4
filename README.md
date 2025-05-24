@@ -23,16 +23,16 @@ ENCODE --> Experiment Summary --> ChiPseq --> advanced search: track name = A549
 
 ИЛИ идем по файлу files.txt и выбираем нужные гистоновые модификации:
 
-<pre> ```bash
+```bash
 wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/files.txt
 grep -i A549 files.txt | grep -i "\.bam" > A549_bam_list.txt
-``` </pre>
+```
 
-#### Контрольный [файл](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549ControlDex100nmAlnRep1.bam ) - ControlStdAlnRep1.bam
+#### Контрольный [файл](http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549ControlDex100nmAlnRep1.bam) - ControlStdAlnRep1.bam
 | Гистоновая метка | Файл | Ссылка на файл |
 | ------------- | ------------- | ------------- |
 |	H3k4me1 |	H3k4me1StdAlnRep1.bed	| http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H3k04me1Etoh02AlnRep1.bam |
-|	H3k4me3 |	H3k4me3StdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/ wgEncodeBroadHistoneA549H3k04me3Etoh02AlnRep1.bam |
+|	H3k4me3 |	H3k4me3StdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H3k04me3Etoh02AlnRep1.bam |
 |	H3k9ac |	H3k9acStdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H3k09acEtoh02AlnRep1.bam |
 |	H3k9me1 |	H3k9me1StdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H3k09me3Etoh02AlnRep1.bam |
 |	H3k27ac |	H3k27acStdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H3k27acEtoh02AlnRep1.bam |
@@ -42,4 +42,40 @@ grep -i A549 files.txt | grep -i "\.bam" > A549_bam_list.txt
 |	H4k20me1 |	H4k20me1StdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549H4k20me1Etoh02AlnRep1.bam |
 |	CTCF |	CtcfStdAlnRep1.bed |	http://hgdownload.cse.ucsc.edu/goldenPath/hg19/encodeDCC/wgEncodeBroadHistone/wgEncodeBroadHistoneA549CtcfEtoh02AlnRep1.bam |
 
-[Скрипт]() для скачивания всех файлов
+#### Скрипт для скачивания всех файлов
+![Скрипт](/img/downloading_bam.png) 
+
+Вручную создаем текстовый файл [cellmarkfiletable.txt](), в котором указываем название типа клеток, разных гистоновых меток, а также соответствующие .bam файлы для эксперимента и контроля. Один и тот же контрольный файл .bam может быть использован для всех экспериментов.
+
+Более подробно о содержании файла cellmarkfiletable.txt можно посмотреть в руководстве пользователя [ChromHMM](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/ChromHMM_tutorial.pdf)
+
+### Активируем миниконду и скачиваем ChromHMM, скачиваем размеры хромосом для разбиения генома на интервалы:
+```bash
+source /gpfs/vigg_mipt/kropivnitskaya/miniconda3/bin/activate
+conda install bioconda::chromhmm
+export PATH=/gpfs/vigg_mipt/kropivnitskaya/miniconda3/bin:$PATH
+
+wget http://hgdownload.cse.ucsc.edu/goldenPath/hg19/bigZips/hg19.chrom.sizes -O hg19.txt
+mkdir -p CHROMSIZES
+mv hg19.txt CHROMSIZES/
+```
+
+## Запуск программ
+1. Запускаем ChromHMM с опцией BinarizeBam, чтобы конвертировать профили из ChIP-seq экспериментов (bam-файлы) в табличку из 0 и 1, т.е. чтобы сделать разбивку генома на условные интервалы (бины) длиной 200 п.о. и для каждого интервала и метки определить: был ли там пик или нет (1 или 0). Для 11 меток программа работает около 20 мин:
+
+```bash
+ChromHMM.sh -Xmx8000M BinarizeBam -b 200 CHROMSIZES/hg19.txt chip_seq cellmarkfiletable.txt binarizedData
+
+#Программа LearnModel не работает, если не убрать название клеточной линии из названий бинарных файлов, поэтому:
+for f in A549_chr*_binary.txt; do
+    mv "$f" "${f#A549_}"
+done
+```
+
+2. Запускаем ChromHMM с опцией LearnModel, которая автоматически определит параметры N разных эпигенетических типов с наиболее выраженными наборами гистоновых меток и присвоит каждому геномному интервалу определенный эпигенетический тип. Количество разных эпигенетических типов (или состояний) - 10 штук. Для 11 меток программа работает около 1 часа:
+
+```bash
+ChromHMM.sh -Xmx8000M LearnModel -p 8 binarizedData MYOUTPUT 10 hg19
+```
+
+## Обработка данных
