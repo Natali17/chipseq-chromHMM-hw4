@@ -164,7 +164,7 @@ http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем фа
 ![state6_8](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state6_8.png)
 - В State 14 много CpGIslands, как и в State 13, также пики H3K4me3 и H3K9ac --> Active Promoter
 - В State 15 наблюдаются пики CTCF и умеренное обогащение по LaminB1 --> Insulator
-[state14_15](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state14_15.png)
+![state14_15](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state14_15.png)
 - В State 11 нет чётких обогащений, только умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb, и отсутствуют пики по гистоновым модификациям --> Weak Enchancer
 - В State 5 есть пики H3k36me3, а также обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Transcription Elongation
 - В State 7 небольшие пики H3K36me3, H3K79me2, H4k20me1 (не всегда), яркое обогащение по RefSeqGene --> Weak Transcribed
@@ -205,7 +205,7 @@ with open(f'A549_15_dense.bed', 'r') as origin_file:
 Файлы A549_15_dense.bed и A549_15_dense_named.bed находятсяв папке data.
 
 #### Полученная визуализация
-![named_visualization]()
+![named_visualization](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/named_visualization.png)
 
 
 
