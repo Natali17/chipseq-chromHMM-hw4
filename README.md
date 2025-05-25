@@ -112,7 +112,7 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем файл [A549_15_dense.bed]() --> Return to current position --> Regulation  --> ENCODE Regulation (show, full) & ENC Histone (show) (click) --> Broad Histone (show, full) (click) --> [выбор нужных параметров]() --> Submit --> выбор нужного региона --> получаем изображения.
 ![adjusting_browser](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/adjusting_browser.png)
 
-#### Визуализация результатов
+#### Определение эпигенетических состояний
 
 Краткая сводка из публичных источников, за какие эпигенетические состояния могут отвечать использованные гистоновые маркеры:
 | Метка | Ассоциированные состояния ChromHMM | 
@@ -175,6 +175,37 @@ http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем фа
 - В State 4 небольшие пики H3k9me1, обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Weak Transcribed
 ![state4](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state4.png)
 
+#### Код для переименования эпигенетических состояний
+```python
+state_names = [ 'Repressed',
+                'Repressed',
+                'Heterochromatin',
+                'Weak_Transcribed',
+                'Transcriptional_Elongation',
+                'Transcriptional_Elongation',
+                'Weak_Transcribed',
+                'Transcriptional_Elongation',
+                'Weak_Transcribed',
+                'Weak_Transcribed',
+                'Weak_Enchancer',
+                'Weak_Enchancer',
+                'Active_Promoter',
+                'Active_Promoter',
+                'Inculator' ]
+
+with open(f'A549_15_dense.bed', 'r') as origin_file:
+  with open(f'A549_15_dense_named.bed', 'w') as named_file:
+    lines = origin_file.readlines()
+    named_file.write(lines[0])
+    for line in lines[1:]:
+        line_splited = line.split('\t')
+        line_splited[3] += '_' + state_names[int(line_splited[3]) - 1]
+        named_file.write('\t'.join(line_splited))
+```
+Файлы A549_15_dense.bed и A549_15_dense_named.bed находятсяв папке data.
+
+#### Полученная визуализация
+![named_visualization]()
 
 
 
