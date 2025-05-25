@@ -115,128 +115,68 @@ http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем фа
 #### Визуализация результатов
 
 Краткая сводка из публичных источников, за какие эпигенетические состояния могут отвечать использованные гистоновые маркеры:
-| Метка | Ассоциированные состояния ChromHMM | Локализация | 
-|---------------|------------------------------------------------|------------------------------------------------| 
-| H3K4me3 | Active Promoter, Weak Promoter | Активные и слабые промоторы | j
-| H3K4me1 | Strong Enhancer, Weak/Poised Enhancer | Энхансеры | 
-| H3K27ac | Strong Enhancer, Active Promoter | Активные энхансеры и промоторы | 
-| H3K9ac | Active Promoter, Enhancer | Активация, чаще в промоторах | j
-| H3K27me3 | Heterochromatin, repressed | преимущественно на ядерной ламине, в области репрессированного гетерохроматина | 
-| H3K9me3 | Heterochromatin, Repetitive/CNV | Гетерохроматин, сайленсинг, повторы | j
-| H3K36me3 | Weak Transcribed, Transcription Elongation |  | j
-| H3K79me2 | Weak Transcribed, Transcription Elongation |  | j
-| H4K20me1 | Weak Transcribed, Heterochromatin | Регуляция транскрипции/структуры | 
-| CTCF | Insulator | Изоляторы, границы TAD | j
+| Метка | Ассоциированные состояния ChromHMM | 
+|---------------|------------------------------------------------|
+| H3K4me3 | Active Promoter, Weak Promoter | 
+| H3K4me1 | Strong Enhancer, Weak/Poised Enhancer |  
+| H3K27ac | Strong Enhancer, Active Promoter | 
+| H3K9ac | Active Promoter, Enhancer | 
+| H3K27me3 | Heterochromatin, repressed | 
+| H3K9me3 | Heterochromatin, Repetitive/CNV | 
+| H3K36me3 | Weak Transcribed, Transcription Elongation | 
+| H3K79me2 | Weak Transcribed, Weak Enchancer, Transcription Elongation |
+| H4K20me1 | Weak Transcribed, Heterochromatin | 
+| CTCF | Insulator, Weak Enchancer | Изоляторы, границы TAD | 
 
 На основе графика "Fold Enrichment A549_15" и сопоставления с визуализацией геномным браузером, вот итоговая таблица, интерпретирующая состояния ChromHMM для клеточной линии A549, модель с 15 состояниями:
 
-| State | Биологическая интерпретация        | Категория                   | Обоснование (по обогащению)                                                             |
-|-------|-------------------------------------|------------------------------|------------------------------------------------------------------------------------------|
-| 1     |  Repressed                     |          | Сильное обогащение по LaminB1, умеренно по Genome%                                                            |
-| 2     |  Repressed                     |          | Обогащение по LaminB1 и Genome%                                                    |
-| 3     |  Heterochromatin           |                 | Сильное обогащение по LaminB1                                                  |
-| 4     |            |                   | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                         |
-| 5     |             |                   | Обогащение по RefSeqGene, RefSeqExon, RefSeqTES                                             |
-| 6     |  Transcriptional Elongation/ Weak Transcribed              |                    | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                                                              |
-| 7     |                |                   | Яркое обогащение по RefSeqGene                                                                  |
-| 8     |                  |               | Яркое обогащение по RefSeqGene                                  |
-| 9     |                  |                     | Сильное обогащение по RefSeqTES, RefSeqGene, RefSeqExon                                         |
-| 10    |                | C                    | Нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene                                                |
-| 11    |      |  | Нет чётких обогащений, умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb                                          |
-| 12    |  Weak Enhancer / Weak Transcribed        |                             | Сильное обогащение по RefSeqGene, меньше RefSeqTES и RefSeqTSS2Kb                                       |
-| 13    |  Active promoter                |                             | Сильное обогащение по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb            |
-| 14    |           |                            | Сигнал слабее, но аналогично State 13                                     |
-| 15    |            |                             | Умеренное обогащение по LaminB1                                                  |
+| State | Биологическая интерпретация        | Обоснование (по обогащению)                                                             |
+|-------|-------------------------------------|------------------------------|
+| 1     |  Repressed           | Сильное обогащение по LaminB1, умеренно по Genome%                                                            |
+| 2     |  Repressed            | Обогащение по LaminB1 и Genome%                                                    |
+| 3     |  Heterochromatin            | Сильное обогащение по LaminB1                                                  |
+| 4     |    Weak Transcribed        | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                         |
+| 5     |  Transcriptional Elongation    | Обогащение по RefSeqGene, RefSeqExon, RefSeqTES                                             |
+| 6     |  Transcriptional Elongation/ Weak Transcribed             | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                              |
+| 7     |    Weak Transcribed            | Яркое обогащение по RefSeqGene                                                                  |
+| 8     |   Transcriptional Elongation       | Яркое обогащение по RefSeqGene                                  |
+| 9     |   Weak Transcribed             | Сильное обогащение по RefSeqTES, RefSeqGene, RefSeqExon                                         |
+| 10    |   Weak Transcribed          | Нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene                                                |
+| 11    |  Weak Enchancer   | Нет чётких обогащений, умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb                                          |
+| 12    |  Weak Enhancer       | Сильное обогащение по RefSeqGene, меньше RefSeqTES и RefSeqTSS2Kb                                       |
+| 13    |  Active promoter           | Сильное обогащение по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb            |
+| 14    |  Active Promoter        | Сигнал слабее, но аналогично State 13                                     |
+| 15    |   Insulator        | Умеренное обогащение по LaminB1                                                  |
 
 
 
 Как определялись эпигенетические состояния:
 - Из A549_15_RefSeqTSS_neighborhood.png видно, что State 13 отвечает за начало транскрипции, плюс обогащения по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb из Fold_Enrichment_A549_15.png и пики на маркерах H3K4me3, H3K9ac, H3K27ac --> Active Promoter
+![state13](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state13.png)
 - Из визуализации геномным браузером видно, что State 12 обрамляет State 13 с двух сторон, и есть яркие пики H3K4me1, который часто отвечает за энхансеры. Однако из графика RefSeqTES.png видим, что тарскрипционная активность распределена по всему участку --> Weak Enhancer / Weak Transcribed
-![state13]()
-![state12]()
-- Больше всего в геноме State 2 и State 3, cильное обогащение по LaminB1 --> Repressed
-![state1_2]()
-- Сильное обогащение по LaminB1 и умеренное по Genome%
+![state12](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state12.png)
+- Больше всего в геноме State 1 и State 2, cильное обогащение по LaminB1 --> Repressed
+![state1_2](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state1_2.png)
 - Для State 3 характерны пики H3k9me3 (является индикатором гетерохроматина или репрессированных транскрибируемых областей) и сильное обогащение по по LaminB1 --> Heterochromatin
-![state3]()
+![state3](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state3.png)
 - Для State 6 характерны пики H3K79me2, H3K36me3, H4K20me1, а также обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Transcriptional Elongation/ Weak Transcribed
-![state6]()
+- В State 8 есть пики H4K20me1, H3K36me3, H3K79me2, в некоторых случаях пики и других меток, а также яркое обогащение по RefSeqGene --> Transcription Elongation
+![state6_8](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state6_8.png)
 - В State 14 много CpGIslands, как и в State 13, также пики H3K4me3 и H3K9ac --> Active Promoter
-- В State 
+- В State 15 наблюдаются пики CTCF и умеренное обогащение по LaminB1 --> Insulator
+[state14_15](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state14_15.png)
+- В State 11 нет чётких обогащений, только умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb, и отсутствуют пики по гистоновым модификациям --> Weak Enchancer
+- В State 5 есть пики H3k36me3, а также обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Transcription Elongation
+- В State 7 небольшие пики H3K36me3, H3K79me2, H4k20me1 (не всегда), яркое обогащение по RefSeqGene --> Weak Transcribed
+![state5_7](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state5_7.png)
+- В State 10 нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene, а также почти не наблюдается пиков --> Weak Transcribed
+- В State 9 пики от CTCF сопряжены с пиками от других гистоновых меток, а также нет сильных активирующих меток типа H3K4me3 или H3K27ac --> Weak Transcribed
+![state10_9](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state10_9.png)
+- В State 4 небольшие пики H3k9me1, обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Weak Transcribed
+![state4](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state4.png)
 
 
 
 
 
 
-
-
-
-
-
-  - *Маркеры*: H3K27me3, H3K4me3, H3K4me2
-  - *Локализация*: интроны или экзоны
-  - *Картинка*: ![Image](/data/picture_1.png)
-
-- Weak Enhancer/Weak Transcribed
-  - *Маркеры*: H3K4me2, H3K4me1
-  - *Локализация*: часто в RefSeqTES, RefSeqGene, у ядерной ламины
-  - *Картинка*: ![Image](/data/picture_2.png)
-
-- Strong Enhancer/Transcriptional Elongation
-  - *Маркеры*: H3K9ac, H3K27ac, H3K4me3, H3K4me2, H3K4me1
-  - *Локализация*: часто в RefSeqTES, RefSeqTSS2Kb, у ядерной ламины
-  - *Картинка*: ![Image](/data/picture_3.png)
-
-- Active Promoter
-  - *Маркеры*: H3K9ac, H3K27ac, H3K4me3, H3K4me2
-  - *Локализация*: часто в CpGIslands, RefSeqTES, RefSeqExon, RefSeqTSS2Kb
-  - *Картинка*: ![Image](/data/picture_4.png)
-
-- Active Promoter
-  - *Маркеры*: H3K9ac, H3K27ac, H3K4me3, H3K4me2
-  - *Локализация*: часто в RefSeqTES, RefSeqTSS2Kb, RefSeqExon, CpGIslands, RefSeqGene
-  - *Картинка*: ![Image](/data/picture_5.png)
-
-- Weak Enhancer
-  - *Маркеры*: H3K79me2, H3K9ac, H3K27ac, H3K4me3, H3K4me2
-  - *Локализация*: часто в RefSeqGene, RefSeqTES, иногда в RefSeqExon
-  - *Картинка*: ![Image](/data/picture_6.png)
-
-- Weak Enhancer
-  - *Маркеры*: H3K9ac, H3K27ac, H3K4me1
-  - *Локализация*: часто в RefSeqTES
-  - *Картинка*: ![Image](/data/picture_7.png)
-
-- Weak Enhancer
-  - *Маркеры*: H3K4me1
-  - *Локализация*: часто в RefSeqTES, иногда у ядерной ламины
-  - *Картинка*: ![Image](/data/picture_8.png)
-
-- Weak Enhancer
-  - *Маркеры*: H3K79me2, H3K4me1
-  - *Локализация*: часто в RefSeqGene, иногда в RefSeqTES и RefSeqExon
-  - *Картинка*: ![Image](/data/picture_9.png)
-
-- Weak Transcribed
-  - *Маркеры*: H3K79me2
-  - *Локализация*: часто в RefSeqGene
-  - *Картинка*: ![Image](/data/picture_10.png)
-
-- Weak Transcribed
-  - *Маркеры*: H3K36me3, H3K79me2
-  - *Локализация*: часто в RefSeqGene, иногда в RefSeqTES и RefSeqExon
-  - *Картинка*: ![Image](/data/picture_11.png)
-
-- Weak Transcribed
-  - *Маркеры*: H3K36me3
-  - *Локализация*: часто в RefSeqGene, иногда в RefSeqTES и RefSeqExon
-  - *Картинка*: ![Image](/data/picture_12.png)
-
-
-
-- Heterochromatin
-  - *Маркеры*: H3K9me3
-  - *Локализация*: преимущественно на ядерной ламине, в области репрессированного гетерохроматина
-  - *Картинка*: ![Image](/data/picture_15.png)
