@@ -92,9 +92,9 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 ### Результаты работы LearnModel
 [webpage_15.html](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/data/webpage_15.html)
 
-#### Transition & Emission
+#### Fold_Enrichment & Emission
 <p align="center">
-  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_overlap.png" width="45%" />
   <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/emissions_15.png" width="45%" />
 </p>
 
@@ -104,14 +104,15 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
   <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_RefSeqTSS_neighborhood.png" width="45%" />
 </p>
 
-#### Overlap
-![overlap](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/A549_15_overlap.png)
+#### Transition
+![overlap](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png)
 
 ### Геномный браузер
 #### Настройки геномного браузера
 http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем файл [A549_15_dense.bed]() --> Return to current position --> Regulation  --> ENCODE Regulation (show, full) & ENC Histone (show) (click) --> Broad Histone (show, full) (click) --> [выбор нужных параметров]() --> Submit --> выбор нужного региона --> получаем изображения.
 ![adjusting_browser](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/adjusting_browser.png)
 
+![state12](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state12.png)
 #### Определение эпигенетических состояний
 
 Краткая сводка из публичных источников, за какие эпигенетические состояния могут отвечать использованные гистоновые маркеры:
