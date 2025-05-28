@@ -95,7 +95,7 @@ java -mx5000M -jar ChromHMM/ChromHMM.jar LearnModel -b 200 binarizedData/ MYOUTP
 #### Transition & Emission
 <p align="center">
   <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png" width="45%" />
-  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/transitions_15.png" width="45%" />
+  <img src="https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/emissions_15.png" width="45%" />
 </p>
 
 #### RefSeqTES & RefSeqTSS
@@ -117,80 +117,56 @@ http://genome.ucsc.edu --> My Data --> Custom Tracks --> загружаем фа
 Краткая сводка из публичных источников, за какие эпигенетические состояния могут отвечать использованные гистоновые маркеры:
 | Метка | Ассоциированные состояния ChromHMM | 
 |---------------|------------------------------------------------|
-| H3K4me3 | Active Promoter, Weak Promoter | 
-| H3K4me1 | Strong Enhancer, Weak/Poised Enhancer |  
+| H3K4me3 | Active Promoter, Weak Promoter (зависит от наличия H3K27ac) | 
+| H3K4me1 | Strong Enhancer, Weak/Poised Enhancer (зависит от наличия H3K36me3) |  
 | H3K27ac | Strong Enhancer, Active Promoter | 
 | H3K9ac | Active Promoter, Enhancer | 
 | H3K27me3 | Heterochromatin, repressed | 
 | H3K9me3 | Heterochromatin, Repetitive/CNV | 
-| H3K36me3 | Weak Transcribed, Transcription Elongation | 
-| H3K79me2 | Weak Transcribed, Weak Enchancer, Transcription Elongation |
+| H3K36me3 | Transcribed Exon (тело гена) | 
+| H3K79me2 | Transcribed, Transcription Elongation (транскрибируемые области активных генов) |
 | H4K20me1 | Weak Transcribed, Heterochromatin | 
-| CTCF | Insulator, Weak Enchancer | Изоляторы, границы TAD | 
+| CTCF | Insulator, Weak Enchancer |
 
-На основе графика "Fold Enrichment A549_15" и сопоставления с визуализацией геномным браузером, вот итоговая таблица, интерпретирующая состояния ChromHMM для клеточной линии A549, модель с 15 состояниями:
+* График "Fold Enrichment A549_15" показывает, насколько сильно каждое состояние обогащено по отношению к геномным элементам, таким как TSS, гены, экзоны, CpG островки и т.п.
+* График "Emission Parameters" показывает вероятность присутствия различных гистоновых меток в каждом из 15 состояний.
+
+На основе графиков "Fold Enrichment A549_15" и "Emissions_15" и сопоставления с визуализацией геномным браузером, вот итоговая таблица, интерпретирующая состояния ChromHMM для клеточной линии A549, модель с 15 состояниями:
 
 | State | Биологическая интерпретация        | Обоснование (по обогащению)                                                             |
 |-------|-------------------------------------|------------------------------|
-| 1     |  Repressed           | Сильное обогащение по LaminB1, умеренно по Genome%                                                            |
-| 2     |  Repressed            | Обогащение по LaminB1 и Genome%                                                    |
-| 3     |  Heterochromatin            | Сильное обогащение по LaminB1                                                  |
-| 4     |    Weak Transcribed        | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                         |
-| 5     |  Transcriptional Elongation    | Обогащение по RefSeqGene, RefSeqExon, RefSeqTES                                             |
-| 6     |  Transcriptional Elongation/ Weak Transcribed             | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES                              |
-| 7     |    Weak Transcribed            | Яркое обогащение по RefSeqGene                                                                  |
-| 8     |   Transcriptional Elongation       | Яркое обогащение по RefSeqGene                                  |
-| 9     |   Weak Transcribed             | Сильное обогащение по RefSeqTES, RefSeqGene, RefSeqExon                                         |
-| 10    |   Weak Transcribed          | Нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene                                                |
-| 11    |  Weak Enchancer   | Нет чётких обогащений, умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb                                          |
-| 12    |  Weak Enhancer       | Сильное обогащение по RefSeqGene, меньше RefSeqTES и RefSeqTSS2Kb                                       |
-| 13    |  Active promoter           | Сильное обогащение по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb            |
-| 14    |  Active Promoter        | Сигнал слабее, но аналогично State 13                                     |
-| 15    |   Insulator        | Умеренное обогащение по LaminB1                                                  |
-
-
-
-Как определялись эпигенетические состояния:
-- Из A549_15_RefSeqTSS_neighborhood.png видно, что State 13 отвечает за начало транскрипции, плюс обогащения по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb из Fold_Enrichment_A549_15.png и пики на маркерах H3K4me3, H3K9ac, H3K27ac --> Active Promoter
-![state13](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state13.png)
-- Из визуализации геномным браузером видно, что State 12 обрамляет State 13 с двух сторон, и есть яркие пики H3K4me1, который часто отвечает за энхансеры. Однако из графика RefSeqTES.png видим, что тарскрипционная активность распределена по всему участку --> Weak Enhancer / Weak Transcribed
-![state12](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state12.png)
-- Больше всего в геноме State 1 и State 2, cильное обогащение по LaminB1 --> Repressed
-![state1_2](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state1_2.png)
-- Для State 3 характерны пики H3k9me3 (является индикатором гетерохроматина или репрессированных транскрибируемых областей) и сильное обогащение по по LaminB1 --> Heterochromatin
-![state3](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state3.png)
-- Для State 6 характерны пики H3K79me2, H3K36me3, H4K20me1, а также обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Transcriptional Elongation/ Weak Transcribed
-- В State 8 есть пики H4K20me1, H3K36me3, H3K79me2, в некоторых случаях пики и других меток, а также яркое обогащение по RefSeqGene --> Transcription Elongation
-![state6_8](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state6_8.png)
-- В State 14 много CpGIslands, как и в State 13, также пики H3K4me3 и H3K9ac --> Active Promoter
-- В State 15 наблюдаются пики CTCF и умеренное обогащение по LaminB1 --> Insulator
-![state14_15](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state14_15.png)
-- В State 11 нет чётких обогащений, только умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb, и отсутствуют пики по гистоновым модификациям --> Weak Enchancer
-- В State 5 есть пики H3k36me3, а также обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Transcription Elongation
-- В State 7 небольшие пики H3K36me3, H3K79me2, H4k20me1 (не всегда), яркое обогащение по RefSeqGene --> Weak Transcribed
-![state5_7](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state5_7.png)
-- В State 10 нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene, а также почти не наблюдается пиков --> Weak Transcribed
-- В State 9 пики от CTCF сопряжены с пиками от других гистоновых меток, а также нет сильных активирующих меток типа H3K4me3 или H3K27ac --> Weak Transcribed
-![state10_9](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state10_9.png)
-- В State 4 небольшие пики H3k9me1, обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES --> Weak Transcribed
-![state4](https://github.com/Natali17/chipseq-chromHMM-hw4/blob/main/img/state4.png)
+| 1     |  Heterochromatin           | Сильное обогащение по LaminB1, умеренно по Genome%; H3k27me3                                                            |
+| 2     |  Repressed            | Обогащение по LaminB1 и Genome%; никаких пиков                                                    |
+| 3     |  Heterochromatin            | Сильное обогащение по LaminB1; H3k9me3                                                  |
+| 4     |    Weak Transcribed        | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES; H3k9me3+H3k36me3                         |
+| 5     |  Transcribed Exon    | Обогащение по RefSeqGene, RefSeqExon, RefSeqTES; H3k36me3                                             |
+| 6     |  Transcriptional Elongation/Transcribed              | Обогащение по RefSeqGene, меньше RefSeqExon, RefSeqTES; H3k36me3+H3k79me2                              |
+| 7     |    Weak Transcribed            | Яркое обогащение по RefSeqGene; H3K79me2                                                                  |
+| 8     |   Transcriptional Elongation/Transcribed       | Яркое обогащение по RefSeqGene; H3k4me1+H3K36me3                                  |
+| 9     |   Genic Enhancer             | Сильное обогащение по RefSeqTES, RefSeqGene, RefSeqExon; H3K4me1+H3K36me3                                          |
+| 10    |   Inactive Enhancer          | Нет чётких обогащений, умеренные сигналы рядом с LaminB1 и RefSeqGene                                                |
+| 11    |  Active Enchancer   | Нет чётких обогащений, умеренные сигналы рядом с RefSeqTES и RefSeqTSS2Kb; H3K4me1+H3K27ac                                          |
+| 12    |  Transcriptional Elongation       | Сильное обогащение по RefSeqGene, меньше RefSeqTES и RefSeqTSS2Kb; H3k79me2                                       |
+| 13    |  Active promoter           | Сильное обогащение по CpGIsland, RefSeqExon, RefSeqTSS и RefSeqTSS2Kb; H3K4me3+H3K27ac           |
+| 14    |  Weak Transcribed        | Сигнал слабее, но аналогично State 13; H3k4me3                                      |
+| 15    |   Insulator        | Умеренное обогащение по LaminB1; Ctcf                                                 |
 
 #### Код для переименования эпигенетических состояний
 ```python
-state_names = [ 'Repressed',
+state_names = [ 'Heterochromatin',
                 'Repressed',
                 'Heterochromatin',
                 'Weak_Transcribed',
-                'Transcriptional_Elongation',
-                'Transcriptional_Elongation',
-                'Weak_Transcribed',
+                'Transcribed_Exon',
                 'Transcriptional_Elongation',
                 'Weak_Transcribed',
-                'Weak_Transcribed',
-                'Weak_Enchancer',
-                'Weak_Enchancer',
+                'Transcriptional_Elongation',
+                'Genic_Enhancer',
+                'Inactive_Enhancer',
+                'Active_Enhancer',
+                'Transcriptional_Elongation',
                 'Active_Promoter',
-                'Active_Promoter',
+                'Weak_Transcribed',
                 'Inculator' ]
 
 with open(f'A549_15_dense.bed', 'r') as origin_file:
